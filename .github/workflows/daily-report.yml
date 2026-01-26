@@ -120,7 +120,7 @@ jobs:
               content_b64 = base64.b64encode(content.encode()).decode()
               r = requests.get(url, headers=headers)
               sha = r.json().get('sha') if r.status_code == 200 else None
-              data = {"message": "Update history data", "content": content_b64, "branch": "main"}
+              data = {"message": "Update history data", "content": content_b64, "branch": "master"}
               if sha:
                   data["sha"] = sha
               r = requests.put(url, headers=headers, json=data)
@@ -309,7 +309,7 @@ jobs:
               data = {
                   "message": "Update Dropbox folder report",
                   "content": base64.b64encode(html_content.encode()).decode(),
-                  "branch": "main"
+                  "branch": "master"
               }
               if sha:
                   data["sha"] = sha
