@@ -357,3 +357,4 @@ jobs:
           save_history_to_github(github_token, github_owner, github_repo, history)
           print(f"Report uploaded: {url}")
           EOF
+
