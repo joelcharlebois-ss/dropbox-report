@@ -101,7 +101,7 @@ def save_history_to_github(
     owner: str,
     repo: str,
     history: Dict,
-    branch: str = "main"
+    branch: str = "master"
 ) -> None:
     """
     Save history.json to GitHub repository.

@@ -40,7 +40,7 @@ def upload_html_to_github(
     repo: str,
     html_content: str,
     filename: str = REPORT_FILENAME,
-    branch: str = "main"
+    branch: str = "master"
 ) -> Tuple[str, str]:
     """
     Upload HTML content to GitHub repository.
@@ -115,7 +115,7 @@ def check_pages_enabled(token: str, owner: str, repo: str) -> bool:
     return response.status_code == 200
 
 
-def enable_pages(token: str, owner: str, repo: str, branch: str = "main") -> None:
+def enable_pages(token: str, owner: str, repo: str, branch: str = "master") -> None:
     """
     Enable GitHub Pages for the repository.
 
