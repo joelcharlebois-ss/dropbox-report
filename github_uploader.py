@@ -2,10 +2,27 @@
 
 import base64
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from typing import Tuple, Optional
 
 
 REPORT_FILENAME = 'index.html'  # index.html for GitHub Pages root
+TIMEOUT = 30  # seconds
+
+
+def get_github_session() -> requests.Session:
+    """Create a requests session with retry policy for GitHub API."""
+    session = requests.Session()
+    retry = Retry(
+        total=3,
+        backoff_factor=0.5,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["GET", "PUT", "POST"]
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("https://", adapter)
+    return session
 
 
 def get_file_sha(token: str, owner: str, repo: str, path: str) -> Optional[str]:
@@ -27,7 +44,7 @@ def get_file_sha(token: str, owner: str, repo: str, path: str) -> Optional[str]:
         "Accept": "application/vnd.github.v3+json"
     }
 
-    response = requests.get(url, headers=headers)
+    response = get_github_session().get(url, headers=headers, timeout=TIMEOUT)
 
     if response.status_code == 200:
         return response.json().get('sha')
@@ -77,7 +94,7 @@ def upload_html_to_github(
     if existing_sha:
         data["sha"] = existing_sha
 
-    response = requests.put(url, headers=headers, json=data)
+    response = get_github_session().put(url, headers=headers, json=data, timeout=TIMEOUT)
 
     if response.status_code not in [200, 201]:
         raise Exception(f"GitHub API error: {response.status_code} - {response.text}")
@@ -111,7 +128,7 @@ def check_pages_enabled(token: str, owner: str, repo: str) -> bool:
         "Accept": "application/vnd.github.v3+json"
     }
 
-    response = requests.get(url, headers=headers)
+    response = get_github_session().get(url, headers=headers, timeout=TIMEOUT)
     return response.status_code == 200
 
 
@@ -138,7 +155,7 @@ def enable_pages(token: str, owner: str, repo: str, branch: str = "master") -> N
         }
     }
 
-    response = requests.post(url, headers=headers, json=data)
+    response = get_github_session().post(url, headers=headers, json=data, timeout=TIMEOUT)
 
     if response.status_code not in [201, 409]:  # 409 = already enabled
         print(f"Warning: Could not enable Pages: {response.status_code} - {response.text}")

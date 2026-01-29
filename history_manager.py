@@ -3,11 +3,28 @@
 import json
 import base64
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from datetime import datetime, timedelta
 from typing import Dict, Optional
 
 
 HISTORY_FILENAME = 'history.json'
+TIMEOUT = 30  # seconds
+
+
+def get_github_session() -> requests.Session:
+    """Create a requests session with retry policy for GitHub API."""
+    session = requests.Session()
+    retry = Retry(
+        total=3,
+        backoff_factor=0.5,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["GET", "PUT", "POST"]
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("https://", adapter)
+    return session
 
 
 def fetch_history_from_github(token: str, owner: str, repo: str) -> Dict:
@@ -28,7 +45,7 @@ def fetch_history_from_github(token: str, owner: str, repo: str) -> Dict:
         "Accept": "application/vnd.github.v3+json"
     }
 
-    response = requests.get(url, headers=headers)
+    response = get_github_session().get(url, headers=headers, timeout=TIMEOUT)
 
     if response.status_code == 200:
         content_b64 = response.json().get('content', '')
@@ -124,7 +141,7 @@ def save_history_to_github(
     content_b64 = base64.b64encode(content.encode('utf-8')).decode('utf-8')
 
     # Check if file exists (need SHA for update)
-    r = requests.get(url, headers=headers)
+    r = get_github_session().get(url, headers=headers, timeout=TIMEOUT)
     existing_sha = r.json().get('sha') if r.status_code == 200 else None
 
     data = {
@@ -136,7 +153,7 @@ def save_history_to_github(
     if existing_sha:
         data["sha"] = existing_sha
 
-    response = requests.put(url, headers=headers, json=data)
+    response = get_github_session().put(url, headers=headers, json=data, timeout=TIMEOUT)
 
     if response.status_code not in [200, 201]:
         raise Exception(f"GitHub API error saving history: {response.status_code} - {response.text}")
