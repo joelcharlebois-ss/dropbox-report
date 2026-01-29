@@ -11,6 +11,7 @@ A Python tool that scans a Dropbox folder recursively, counts files in each subf
 - **"Change from yesterday"** indicator to track daily progress
 - Hosted on GitHub Pages for easy access
 - Runs daily via GitHub Actions (9:00 AM UTC)
+- Supports OAuth2 refresh tokens for long-running automation
 
 ## Live Report
 
@@ -23,12 +24,14 @@ dropbox-folder-counter/
 ├── .github/
 │   └── workflows/
 │       └── daily-report.yml    # GitHub Actions workflow
-├── main.py                     # Local entry point (Cloud Function compatible)
+├── main.py                     # Entry point (Cloud Function compatible)
 ├── dropbox_scanner.py          # Dropbox API logic
 ├── html_generator.py           # HTML report generation with Chart.js
 ├── history_manager.py          # Historical data management
 ├── github_uploader.py          # GitHub Pages upload logic
+├── get_refresh_token.py        # OAuth2 helper to obtain refresh tokens
 ├── requirements.txt            # Python dependencies
+├── .gitignore                  # Git ignore rules
 └── README.md                   # This file
 ```
 
@@ -51,7 +54,23 @@ dropbox-folder-counter/
 4. Name your app and create it
 5. Under "Permissions", enable:
    - `files.metadata.read`
-6. Under "Settings", generate an access token
+6. Under "Settings", note your **App key** and **App secret**
+
+#### Obtaining OAuth2 Tokens
+
+Short-lived access tokens expire after 4 hours. For automated daily runs, you need a refresh token:
+
+1. Add your App key and App secret to `.env`:
+   ```
+   DROPBOX_APP_KEY=your_app_key
+   DROPBOX_APP_SECRET=your_app_secret
+   ```
+2. Run the helper script:
+   ```bash
+   python get_refresh_token.py
+   ```
+3. Authorize the app in your browser when prompted
+4. Copy the tokens output and add them to your secrets/`.env`
 
 ### 2. GitHub Repository Setup
 
@@ -65,11 +84,14 @@ dropbox-folder-counter/
 
 Go to your repository's **Settings → Secrets and variables → Actions** and add:
 
-| Secret Name | Description |
-|-------------|-------------|
-| `DROPBOX_ACCESS_TOKEN` | Your Dropbox API access token |
-| `DROPBOX_ROOT_PATH` | Folder path to scan (e.g., `/My Folder/subfolder`) |
-| `GH_PAT` | GitHub Personal Access Token with `repo` scope |
+| Secret Name | Required | Description |
+|-------------|----------|-------------|
+| `DROPBOX_ACCESS_TOKEN` | Yes | Dropbox OAuth2 access token |
+| `DROPBOX_REFRESH_TOKEN` | Yes | Dropbox OAuth2 refresh token (for auto-renewal) |
+| `DROPBOX_APP_KEY` | Yes | Dropbox app key (for token refresh) |
+| `DROPBOX_APP_SECRET` | No | Dropbox app secret (for confidential apps) |
+| `DROPBOX_ROOT_PATH` | No | Folder path to scan (e.g., `/My Folder/subfolder`) |
+| `GH_PAT` | Yes | GitHub Personal Access Token with `repo` scope |
 
 #### Creating a GitHub Personal Access Token
 
@@ -100,7 +122,10 @@ Go to your repository's **Settings → Secrets and variables → Actions** and a
    ```
 4. Create `.env` file with your credentials:
    ```
-   DROPBOX_ACCESS_TOKEN=your_token
+   DROPBOX_ACCESS_TOKEN=your_access_token
+   DROPBOX_REFRESH_TOKEN=your_refresh_token
+   DROPBOX_APP_KEY=your_app_key
+   DROPBOX_APP_SECRET=your_app_secret
    DROPBOX_ROOT_PATH=/path/to/scan
    GITHUB_TOKEN=your_github_pat
    GITHUB_OWNER=your_username
@@ -122,9 +147,26 @@ Go to your repository's **Settings → Secrets and variables → Actions** and a
 
 ## Troubleshooting
 
+### Viewing Logs
+
+**GitHub Actions:**
+- Go to your repository → Actions tab → Select workflow run → Click job → View step output
+
+**Google Cloud Functions** (if deployed):
+- Google Cloud Console → Cloud Functions → Select function → "Logs" tab
+- Or via CLI: `gcloud functions logs read <function-name>`
+
+**Local development:**
+- Logs print directly to the terminal when running `python main.py`
+
 ### "Dropbox path not found"
 - Verify the `DROPBOX_ROOT_PATH` secret uses spaces, not URL encoding
 - Example: `/Quebec Project/pendingInbox` (correct) vs `/Quebec%20Project/pendingInbox` (wrong)
+
+### "Token expired" or authentication errors
+- Ensure you have set up refresh tokens (see OAuth2 setup above)
+- Verify `DROPBOX_REFRESH_TOKEN` and `DROPBOX_APP_KEY` secrets are configured
+- Run `get_refresh_token.py` to obtain new tokens if needed
 
 ### "Branch not found" error
 - Ensure the workflow is configured for your default branch (`master` or `main`)
