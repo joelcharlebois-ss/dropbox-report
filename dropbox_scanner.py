@@ -2,16 +2,17 @@
 
 import dropbox
 from dropbox.files import FolderMetadata, FileMetadata
-from typing import List, Dict
+from collections import deque
+from typing import List, Dict, Any, Optional
 
 
 def scan_dropbox_folder(
     access_token: str,
     root_path: str,
-    refresh_token: str = None,
-    app_key: str = None,
-    app_secret: str = None
-) -> List[Dict[str, any]]:
+    refresh_token: Optional[str] = None,
+    app_key: Optional[str] = None,
+    app_secret: Optional[str] = None
+) -> List[Dict[str, Any]]:
     """
     Recursively scan a Dropbox folder and count direct files in each subfolder.
 
@@ -34,7 +35,7 @@ def scan_dropbox_folder(
         )
     else:
         dbx = dropbox.Dropbox(access_token)
-    results = []
+    results: List[Dict[str, Any]] = []
 
     # Normalize root path (empty string for root, otherwise ensure leading slash)
     if root_path and not root_path.startswith('/'):
@@ -43,10 +44,10 @@ def scan_dropbox_folder(
         root_path = ''
 
     # Queue of folders to process
-    folders_to_scan = [root_path]
+    folders_to_scan = deque([root_path])
 
     while folders_to_scan:
-        current_path = folders_to_scan.pop(0)
+        current_path = folders_to_scan.popleft()
         file_count = 0
 
         try:

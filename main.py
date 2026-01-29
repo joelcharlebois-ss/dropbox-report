@@ -118,7 +118,7 @@ def main(request: Request):
         return json.dumps({
             'status': 'error',
             'error_type': 'configuration',
-            'message': str(e)
+            'message': 'Invalid or missing configuration. Check server logs for details.'
         }), 400, {'Content-Type': 'application/json'}
 
     except Exception as e:
@@ -127,7 +127,7 @@ def main(request: Request):
         return json.dumps({
             'status': 'error',
             'error_type': 'runtime',
-            'message': str(e)
+            'message': 'An unexpected error occurred. Check server logs for details.'
         }), 500, {'Content-Type': 'application/json'}
 
 

@@ -1,12 +1,12 @@
 """HTML report generation with sortable table and progress chart."""
 
 from datetime import datetime
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 import json
 
 
 def generate_html_report(
-    folder_data: List[Dict[str, any]],
+    folder_data: List[Dict[str, Any]],
     root_path: str,
     history_data: Optional[Dict] = None
 ) -> str:
@@ -322,6 +322,12 @@ def generate_html_report(
     <script src="https://unpkg.com/tabulator-tables@5.5.0/dist/js/tabulator.min.js"></script>
     {chart_script}
     <script>
+        function escapeHtml(text) {{
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }}
+
         const tableData = {table_data_json};
 
         const table = new Tabulator("#folder-table", {{
@@ -339,7 +345,7 @@ def generate_html_report(
                     widthGrow: 3,
                     formatter: function(cell) {{
                         const value = cell.getValue();
-                        return '<span style="font-family: monospace;">' + value + '</span>';
+                        return '<span style="font-family: monospace;">' + escapeHtml(value) + '</span>';
                     }}
                 }},
                 {{
