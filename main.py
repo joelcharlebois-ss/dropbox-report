@@ -43,6 +43,9 @@ def main(request: Request):
     try:
         # Load configuration from environment
         dropbox_token = get_env_var('DROPBOX_ACCESS_TOKEN')
+        dropbox_refresh_token = get_env_var('DROPBOX_REFRESH_TOKEN', required=False) or None
+        dropbox_app_key = get_env_var('DROPBOX_APP_KEY', required=False) or None
+        dropbox_app_secret = get_env_var('DROPBOX_APP_SECRET', required=False) or None
         dropbox_root = get_env_var('DROPBOX_ROOT_PATH', required=False) or ''
         github_token = get_env_var('GITHUB_TOKEN')
         github_owner = get_env_var('GITHUB_OWNER')
@@ -55,7 +58,13 @@ def main(request: Request):
 
         # Step 2: Scan Dropbox
         print(f"Scanning Dropbox folder: {dropbox_root or '/'}")
-        folder_data = scan_dropbox_folder(dropbox_token, dropbox_root)
+        folder_data = scan_dropbox_folder(
+            dropbox_token,
+            dropbox_root,
+            refresh_token=dropbox_refresh_token,
+            app_key=dropbox_app_key,
+            app_secret=dropbox_app_secret
+        )
         print(f"Found {len(folder_data)} folders")
 
         # Calculate totals

@@ -5,18 +5,35 @@ from dropbox.files import FolderMetadata, FileMetadata
 from typing import List, Dict
 
 
-def scan_dropbox_folder(access_token: str, root_path: str) -> List[Dict[str, any]]:
+def scan_dropbox_folder(
+    access_token: str,
+    root_path: str,
+    refresh_token: str = None,
+    app_key: str = None,
+    app_secret: str = None
+) -> List[Dict[str, any]]:
     """
     Recursively scan a Dropbox folder and count direct files in each subfolder.
 
     Args:
         access_token: Dropbox API access token
         root_path: Root folder path to scan (e.g., "/MyFolder" or "" for root)
+        refresh_token: OAuth2 refresh token for automatic token refresh
+        app_key: Dropbox app key (required with refresh_token)
+        app_secret: Dropbox app secret (optional, for confidential apps)
 
     Returns:
         List of dictionaries with 'path' and 'file_count' keys
     """
-    dbx = dropbox.Dropbox(access_token)
+    if refresh_token and app_key:
+        dbx = dropbox.Dropbox(
+            oauth2_access_token=access_token,
+            oauth2_refresh_token=refresh_token,
+            app_key=app_key,
+            app_secret=app_secret
+        )
+    else:
+        dbx = dropbox.Dropbox(access_token)
     results = []
 
     # Normalize root path (empty string for root, otherwise ensure leading slash)
