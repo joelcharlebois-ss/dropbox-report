@@ -32,7 +32,7 @@
 <body>
     <div class="container">
         <h1>Dropbox Folder File Count Report</h1>
-        <div class="meta-info"><span><strong>Generated:</strong> 2026-01-29 11:03:45 UTC</span></div>
+        <div class="meta-info"><span><strong>Generated:</strong> 2026-01-30 10:06:20 UTC</span></div>
         
         <div class="chart-container">
             <h2 class="chart-title">14-Day Progress</h2>
@@ -40,11 +40,11 @@
         </div>
         <div class="stats">
             <div class="stat-box"><div class="label">Total Folders</div><div class="value">21</div></div>
-            <div class="stat-box"><div class="label">Total Files</div><div class="value">36,318</div></div>
+            <div class="stat-box"><div class="label">Total Files</div><div class="value">36,132</div></div>
             
             <div class="stat-box change-box">
                 <div class="label">Change from Yesterday</div>
-                <div class="value" style="color: #dc3545;"><span style="font-size: 18px;">&#x2191;</span> 36,318 files</div>
+                <div class="value" style="color: #28a745;"><span style="font-size: 18px;">&#x2193;</span> 186 files</div>
             </div>
         </div>
         <div class="search-box"><input type="text" id="search-input" placeholder="Search folders..."></div>
@@ -59,10 +59,10 @@
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ["2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29"],
+                    labels: ["2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30"],
                     datasets: [{
                         label: 'Total Files',
-                        data: [36318, 36318, 0, 36318],
+                        data: [36318, 36318, 0, 36318, 36132],
                         borderColor: '#0061fe',
                         backgroundColor: 'rgba(0, 97, 254, 0.1)',
                         borderWidth: 2,
@@ -97,7 +97,7 @@
             });
         </script>
     <script>
-        const tableData = [{"path": "/", "file_count": 0}, {"path": "/batch 357", "file_count": 1888}, {"path": "/batch 358", "file_count": 2296}, {"path": "/batch 359", "file_count": 1742}, {"path": "/batch 360", "file_count": 356}, {"path": "/batch 361", "file_count": 1568}, {"path": "/batch 362", "file_count": 2027}, {"path": "/batch 363", "file_count": 3563}, {"path": "/batch 364", "file_count": 1390}, {"path": "/batch 365", "file_count": 1130}, {"path": "/batch 366", "file_count": 1703}, {"path": "/batch 367", "file_count": 2603}, {"path": "/batch 368", "file_count": 3425}, {"path": "/batch 369", "file_count": 1577}, {"path": "/batch 370", "file_count": 3048}, {"path": "/batch 372", "file_count": 1653}, {"path": "/batch 373", "file_count": 2117}, {"path": "/batch 374", "file_count": 1618}, {"path": "/batch 375", "file_count": 110}, {"path": "/batch 376", "file_count": 897}, {"path": "/batch 377", "file_count": 1607}];
+        const tableData = [{"path": "/", "file_count": 0}, {"path": "/batch 357", "file_count": 1888}, {"path": "/batch 358", "file_count": 2296}, {"path": "/batch 359", "file_count": 1742}, {"path": "/batch 360", "file_count": 356}, {"path": "/batch 361", "file_count": 1568}, {"path": "/batch 362", "file_count": 2027}, {"path": "/batch 363", "file_count": 3563}, {"path": "/batch 364", "file_count": 1390}, {"path": "/batch 365", "file_count": 1130}, {"path": "/batch 366", "file_count": 1703}, {"path": "/batch 367", "file_count": 2603}, {"path": "/batch 368", "file_count": 3425}, {"path": "/batch 369", "file_count": 1577}, {"path": "/batch 370", "file_count": 3048}, {"path": "/batch 373", "file_count": 2117}, {"path": "/batch 374", "file_count": 1618}, {"path": "/batch 375", "file_count": 110}, {"path": "/batch 376", "file_count": 897}, {"path": "/batch 377", "file_count": 1607}, {"path": "/batch 378", "file_count": 1467}];
         const table = new Tabulator("#folder-table", {
             data: tableData, layout: "fitColumns", pagination: "local", paginationSize: 50,
             paginationSizeSelector: [25, 50, 100, 250, true],
