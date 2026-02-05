@@ -92,6 +92,58 @@ GITHUB_REPO             # Target repository name
 - `index.html` - Interactive report with trend chart and searchable table
 - `history.json` - Last 14 days of scan data
 
+## E2E Testing
+
+The HTML dashboard has Playwright-based E2E tests using static fixture files.
+
+### Test Structure
+```
+dropbox-folder-counter/
+├── playwright.config.ts          # Playwright configuration (root)
+├── package.json                  # Node.js dependencies
+└── tests/e2e/
+    ├── fixtures/                 # Static HTML test fixtures
+    │   ├── index-full.html       # Standard dashboard
+    │   ├── index-empty.html      # No data scenario
+    │   ├── index-error.html      # Contains error entries (file_count: -1)
+    │   ├── index-large.html      # 300+ rows for pagination
+    │   └── index-no-history.html # No chart data
+    ├── dashboard.spec.ts         # Layout, stats, accessibility tests
+    ├── table.spec.ts             # Tabulator sorting, search, pagination
+    └── chart.spec.ts             # Chart.js rendering tests
+```
+
+### Running Tests
+```bash
+# Install dependencies
+npm install
+npx playwright install
+
+# Run all tests
+npm test
+
+# Run with UI mode (interactive)
+npm run test:ui
+
+# Run headed (see browser)
+npm run test:headed
+
+# View HTML report
+npm run test:report
+```
+
+### Key Selectors
+| Element | Selector |
+|---------|----------|
+| Title | `h1` |
+| Timestamp | `.meta-info` |
+| Stats | `.stat-box .value` |
+| Change indicator | `.stat-box.change-box .value` |
+| Chart canvas | `#progressChart` |
+| Table container | `#folder-table` |
+| Search input | `#search-input` |
+| Table rows | `.tabulator-row` |
+
 ## Additional Documentation
 
 When working on specific areas, consult these files:

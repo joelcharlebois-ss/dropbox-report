@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropbox Folder File Count Report</title>
+    <link href="https://unpkg.com/tabulator-tables@5.5.0/dist/css/tabulator.min.css" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background-color: #f5f5f5; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { margin: 0 0 10px 0; color: #0061fe; font-size: 24px; }
+        .meta-info { color: #666; font-size: 14px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+        .chart-container { margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 6px; height: 250px; }
+        .chart-title { margin: 0 0 15px 0; font-size: 16px; color: #333; font-weight: 600; }
+        #progressChart { max-height: 180px; }
+        .stats { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+        .stat-box { background: #f8f9fa; padding: 15px 20px; border-radius: 6px; border-left: 4px solid #0061fe; }
+        .stat-box.change-box { border-left-color: #6c757d; }
+        .stat-box .label { font-size: 12px; color: #666; text-transform: uppercase; }
+        .stat-box .value { font-size: 24px; font-weight: bold; color: #333; }
+        .search-box { margin-bottom: 15px; }
+        .search-box input { padding: 10px 15px; font-size: 14px; border: 1px solid #ddd; border-radius: 4px; width: 300px; }
+        .search-box input:focus { outline: none; border-color: #0061fe; }
+        .tabulator { border: 1px solid #ddd; border-radius: 4px; }
+        .tabulator-row:nth-child(even) { background-color: #f9f9f9; }
+        .tabulator-row:hover { background-color: #e8f4ff !important; }
+        .tabulator-header { background-color: #f8f9fa; border-bottom: 2px solid #0061fe; }
+        .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; font-size: 12px; color: #999; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dropbox Folder File Count Report</h1>
+        <div class="meta-info"><span><strong>Generated:</strong> 2026-01-29 02:52:13 UTC</span></div>
+
+        <div class="chart-container">
+            <h2 class="chart-title">14-Day Progress</h2>
+            <canvas id="progressChart"></canvas>
+        </div>
+        <div class="stats">
+            <div class="stat-box"><div class="label">Total Folders</div><div class="value">350</div></div>
+            <div class="stat-box"><div class="label">Total Files</div><div class="value">850,000</div></div>
+
+            <div class="stat-box change-box">
+                <div class="label">Change from Yesterday</div>
+                <div class="value" style="color: #dc3545;"><span style="font-size: 18px;">&#x2191;</span> 5,000 files</div>
+            </div>
+        </div>
+        <div class="search-box"><input type="text" id="search-input" placeholder="Search folders..."></div>
+        <div id="folder-table"></div>
+        <div class="footer">Report generated automatically</div>
+    </div>
+    <script src="https://unpkg.com/tabulator-tables@5.5.0/dist/js/tabulator.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29"],
+                    datasets: [{
+                        label: 'Total Files',
+                        data: [840000, 842000, 845000, 850000],
+                        borderColor: '#0061fe',
+                        backgroundColor: 'rgba(0, 97, 254, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#0061fe',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) { return context.parsed.y.toLocaleString() + ' files'; }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            ticks: { callback: function(value) { return value.toLocaleString(); } }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        </script>
+    <script>
+        const tableData = [{"path":"/folder-001","file_count":2438},{"path":"/folder-002","file_count":1283},{"path":"/folder-003","file_count":4768},{"path":"/folder-004","file_count":2998},{"path":"/folder-005","file_count":1594},{"path":"/folder-006","file_count":4306},{"path":"/folder-007","file_count":3394},{"path":"/folder-008","file_count":4933},{"path":"/folder-009","file_count":799},{"path":"/folder-010","file_count":4308},{"path":"/folder-011","file_count":2623},{"path":"/folder-012","file_count":656},{"path":"/folder-013","file_count":2108},{"path":"/folder-014","file_count":3269},{"path":"/folder-015","file_count":3759},{"path":"/folder-016","file_count":4656},{"path":"/folder-017","file_count":2921},{"path":"/folder-018","file_count":1985},{"path":"/folder-019","file_count":2385},{"path":"/folder-020","file_count":2208},{"path":"/folder-021","file_count":3519},{"path":"/folder-022","file_count":2046},{"path":"/folder-023","file_count":2596},{"path":"/folder-024","file_count":2475},{"path":"/folder-025","file_count":633},{"path":"/folder-026","file_count":4232},{"path":"/folder-027","file_count":3960},{"path":"/folder-028","file_count":1515},{"path":"/folder-029","file_count":101},{"path":"/folder-030","file_count":4581},{"path":"/folder-031","file_count":596},{"path":"/folder-032","file_count":391},{"path":"/folder-033","file_count":3489},{"path":"/folder-034","file_count":3730},{"path":"/folder-035","file_count":3292},{"path":"/folder-036","file_count":3841},{"path":"/folder-037","file_count":2839},{"path":"/folder-038","file_count":1938},{"path":"/folder-039","file_count":2360},{"path":"/folder-040","file_count":2027},{"path":"/folder-041","file_count":1888},{"path":"/folder-042","file_count":1938},{"path":"/folder-043","file_count":2071},{"path":"/folder-044","file_count":1665},{"path":"/folder-045","file_count":1003},{"path":"/folder-046","file_count":4534},{"path":"/folder-047","file_count":4415},{"path":"/folder-048","file_count":936},{"path":"/folder-049","file_count":559},{"path":"/folder-050","file_count":289},{"path":"/folder-051","file_count":2579},{"path":"/folder-052","file_count":1006},{"path":"/folder-053","file_count":304},{"path":"/folder-054","file_count":1123},{"path":"/folder-055","file_count":160},{"path":"/folder-056","file_count":1202},{"path":"/folder-057","file_count":2785},{"path":"/folder-058","file_count":1604},{"path":"/folder-059","file_count":4891},{"path":"/folder-060","file_count":605},{"path":"/folder-061","file_count":3325},{"path":"/folder-062","file_count":3864},{"path":"/folder-063","file_count":4622},{"path":"/folder-064","file_count":4156},{"path":"/folder-065","file_count":646},{"path":"/folder-066","file_count":2887},{"path":"/folder-067","file_count":2812},{"path":"/folder-068","file_count":3221},{"path":"/folder-069","file_count":4616},{"path":"/folder-070","file_count":1063},{"path":"/folder-071","file_count":324},{"path":"/folder-072","file_count":1230},{"path":"/folder-073","file_count":3117},{"path":"/folder-074","file_count":178},{"path":"/folder-075","file_count":178},{"path":"/folder-076","file_count":456},{"path":"/folder-077","file_count":4661},{"path":"/folder-078","file_count":4792},{"path":"/folder-079","file_count":1663},{"path":"/folder-080","file_count":4877},{"path":"/folder-081","file_count":306},{"path":"/folder-082","file_count":2425},{"path":"/folder-083","file_count":1064},{"path":"/folder-084","file_count":4238},{"path":"/folder-085","file_count":4706},{"path":"/folder-086","file_count":1978},{"path":"/folder-087","file_count":3802},{"path":"/folder-088","file_count":4714},{"path":"/folder-089","file_count":4960},{"path":"/folder-090","file_count":162},{"path":"/folder-091","file_count":4680},{"path":"/folder-092","file_count":2229},{"path":"/folder-093","file_count":4067},{"path":"/folder-094","file_count":2826},{"path":"/folder-095","file_count":3044},{"path":"/folder-096","file_count":4347},{"path":"/folder-097","file_count":4045},{"path":"/folder-098","file_count":817},{"path":"/folder-099","file_count":3635},{"path":"/folder-100","file_count":1860},{"path":"/folder-101","file_count":2402},{"path":"/folder-102","file_count":392},{"path":"/folder-103","file_count":2624},{"path":"/folder-104","file_count":1810},{"path":"/folder-105","file_count":3735},{"path":"/folder-106","file_count":1689},{"path":"/folder-107","file_count":2841},{"path":"/folder-108","file_count":2546},{"path":"/folder-109","file_count":1645},{"path":"/folder-110","file_count":3114},{"path":"/folder-111","file_count":3096},{"path":"/folder-112","file_count":4969},{"path":"/folder-113","file_count":2115},{"path":"/folder-114","file_count":938},{"path":"/folder-115","file_count":4047},{"path":"/folder-116","file_count":781},{"path":"/folder-117","file_count":495},{"path":"/folder-118","file_count":2278},{"path":"/folder-119","file_count":3020},{"path":"/folder-120","file_count":4411},{"path":"/folder-121","file_count":2898},{"path":"/folder-122","file_count":3341},{"path":"/folder-123","file_count":1158},{"path":"/folder-124","file_count":4196},{"path":"/folder-125","file_count":4457},{"path":"/folder-126","file_count":4522},{"path":"/folder-127","file_count":1712},{"path":"/folder-128","file_count":445},{"path":"/folder-129","file_count":1846},{"path":"/folder-130","file_count":2687},{"path":"/folder-131","file_count":2219},{"path":"/folder-132","file_count":4099},{"path":"/folder-133","file_count":2814},{"path":"/folder-134","file_count":4219},{"path":"/folder-135","file_count":3811},{"path":"/folder-136","file_count":1990},{"path":"/folder-137","file_count":1349},{"path":"/folder-138","file_count":2431},{"path":"/folder-139","file_count":665},{"path":"/folder-140","file_count":557},{"path":"/folder-141","file_count":3703},{"path":"/folder-142","file_count":3213},{"path":"/folder-143","file_count":1005},{"path":"/folder-144","file_count":1241},{"path":"/folder-145","file_count":626},{"path":"/folder-146","file_count":406},{"path":"/folder-147","file_count":1648},{"path":"/folder-148","file_count":1262},{"path":"/folder-149","file_count":2911},{"path":"/folder-150","file_count":3627},{"path":"/folder-151","file_count":865},{"path":"/folder-152","file_count":4644},{"path":"/folder-153","file_count":3448},{"path":"/folder-154","file_count":4052},{"path":"/folder-155","file_count":671},{"path":"/folder-156","file_count":1131},{"path":"/folder-157","file_count":1288},{"path":"/folder-158","file_count":2692},{"path":"/folder-159","file_count":2619},{"path":"/folder-160","file_count":786},{"path":"/folder-161","file_count":4459},{"path":"/folder-162","file_count":437},{"path":"/folder-163","file_count":3594},{"path":"/folder-164","file_count":1534},{"path":"/folder-165","file_count":4996},{"path":"/folder-166","file_count":821},{"path":"/folder-167","file_count":3577},{"path":"/folder-168","file_count":2697},{"path":"/folder-169","file_count":3418},{"path":"/folder-170","file_count":253},{"path":"/folder-171","file_count":886},{"path":"/folder-172","file_count":2370},{"path":"/folder-173","file_count":2298},{"path":"/folder-174","file_count":4846},{"path":"/folder-175","file_count":1462},{"path":"/folder-176","file_count":3403},{"path":"/folder-177","file_count":2584},{"path":"/folder-178","file_count":4472},{"path":"/folder-179","file_count":1720},{"path":"/folder-180","file_count":197},{"path":"/folder-181","file_count":4808},{"path":"/folder-182","file_count":668},{"path":"/folder-183","file_count":2987},{"path":"/folder-184","file_count":736},{"path":"/folder-185","file_count":2009},{"path":"/folder-186","file_count":4428},{"path":"/folder-187","file_count":2275},{"path":"/folder-188","file_count":3001},{"path":"/folder-189","file_count":1881},{"path":"/folder-190","file_count":2870},{"path":"/folder-191","file_count":2707},{"path":"/folder-192","file_count":1383},{"path":"/folder-193","file_count":393},{"path":"/folder-194","file_count":1913},{"path":"/folder-195","file_count":520},{"path":"/folder-196","file_count":4424},{"path":"/folder-197","file_count":4838},{"path":"/folder-198","file_count":1106},{"path":"/folder-199","file_count":1207},{"path":"/folder-200","file_count":1755},{"path":"/folder-201","file_count":2825},{"path":"/folder-202","file_count":2337},{"path":"/folder-203","file_count":2110},{"path":"/folder-204","file_count":610},{"path":"/folder-205","file_count":309},{"path":"/folder-206","file_count":1687},{"path":"/folder-207","file_count":1765},{"path":"/folder-208","file_count":2908},{"path":"/folder-209","file_count":3627},{"path":"/folder-210","file_count":3937},{"path":"/folder-211","file_count":4167},{"path":"/folder-212","file_count":2960},{"path":"/folder-213","file_count":1512},{"path":"/folder-214","file_count":2341},{"path":"/folder-215","file_count":4858},{"path":"/folder-216","file_count":4638},{"path":"/folder-217","file_count":4611},{"path":"/folder-218","file_count":1155},{"path":"/folder-219","file_count":2584},{"path":"/folder-220","file_count":1981},{"path":"/folder-221","file_count":4525},{"path":"/folder-222","file_count":4060},{"path":"/folder-223","file_count":2919},{"path":"/folder-224","file_count":4467},{"path":"/folder-225","file_count":1694},{"path":"/folder-226","file_count":1516},{"path":"/folder-227","file_count":262},{"path":"/folder-228","file_count":1971},{"path":"/folder-229","file_count":1610},{"path":"/folder-230","file_count":2351},{"path":"/folder-231","file_count":2151},{"path":"/folder-232","file_count":1412},{"path":"/folder-233","file_count":3719},{"path":"/folder-234","file_count":3833},{"path":"/folder-235","file_count":3877},{"path":"/folder-236","file_count":1768},{"path":"/folder-237","file_count":1461},{"path":"/folder-238","file_count":1809},{"path":"/folder-239","file_count":150},{"path":"/folder-240","file_count":2822},{"path":"/folder-241","file_count":2730},{"path":"/folder-242","file_count":3266},{"path":"/folder-243","file_count":1387},{"path":"/folder-244","file_count":3593},{"path":"/folder-245","file_count":4962},{"path":"/folder-246","file_count":4297},{"path":"/folder-247","file_count":4480},{"path":"/folder-248","file_count":3241},{"path":"/folder-249","file_count":2660},{"path":"/folder-250","file_count":3819},{"path":"/folder-251","file_count":2033},{"path":"/folder-252","file_count":1640},{"path":"/folder-253","file_count":589},{"path":"/folder-254","file_count":336},{"path":"/folder-255","file_count":1392},{"path":"/folder-256","file_count":582},{"path":"/folder-257","file_count":864},{"path":"/folder-258","file_count":1981},{"path":"/folder-259","file_count":1704},{"path":"/folder-260","file_count":2514},{"path":"/folder-261","file_count":3502},{"path":"/folder-262","file_count":242},{"path":"/folder-263","file_count":4344},{"path":"/folder-264","file_count":709},{"path":"/folder-265","file_count":4231},{"path":"/folder-266","file_count":272},{"path":"/folder-267","file_count":1247},{"path":"/folder-268","file_count":3035},{"path":"/folder-269","file_count":1538},{"path":"/folder-270","file_count":2224},{"path":"/folder-271","file_count":3356},{"path":"/folder-272","file_count":3506},{"path":"/folder-273","file_count":2192},{"path":"/folder-274","file_count":1559},{"path":"/folder-275","file_count":776},{"path":"/folder-276","file_count":3230},{"path":"/folder-277","file_count":4442},{"path":"/folder-278","file_count":1902},{"path":"/folder-279","file_count":3406},{"path":"/folder-280","file_count":2074},{"path":"/folder-281","file_count":4547},{"path":"/folder-282","file_count":470},{"path":"/folder-283","file_count":3328},{"path":"/folder-284","file_count":2662},{"path":"/folder-285","file_count":533},{"path":"/folder-286","file_count":3601},{"path":"/folder-287","file_count":3645},{"path":"/folder-288","file_count":4662},{"path":"/folder-289","file_count":3307},{"path":"/folder-290","file_count":1468},{"path":"/folder-291","file_count":3914},{"path":"/folder-292","file_count":196},{"path":"/folder-293","file_count":3865},{"path":"/folder-294","file_count":3569},{"path":"/folder-295","file_count":4156},{"path":"/folder-296","file_count":433},{"path":"/folder-297","file_count":2172},{"path":"/folder-298","file_count":3506},{"path":"/folder-299","file_count":1019},{"path":"/folder-300","file_count":832},{"path":"/folder-301","file_count":1266},{"path":"/folder-302","file_count":951},{"path":"/folder-303","file_count":2208},{"path":"/folder-304","file_count":809},{"path":"/folder-305","file_count":2835},{"path":"/folder-306","file_count":2677},{"path":"/folder-307","file_count":2002},{"path":"/folder-308","file_count":2206},{"path":"/folder-309","file_count":1204},{"path":"/folder-310","file_count":3482},{"path":"/folder-311","file_count":4020},{"path":"/folder-312","file_count":3266},{"path":"/folder-313","file_count":3034},{"path":"/folder-314","file_count":898},{"path":"/folder-315","file_count":2253},{"path":"/folder-316","file_count":3143},{"path":"/folder-317","file_count":3264},{"path":"/folder-318","file_count":237},{"path":"/folder-319","file_count":2886},{"path":"/folder-320","file_count":4332},{"path":"/folder-321","file_count":4933},{"path":"/folder-322","file_count":814},{"path":"/folder-323","file_count":2157},{"path":"/folder-324","file_count":2713},{"path":"/folder-325","file_count":1016},{"path":"/folder-326","file_count":4822},{"path":"/folder-327","file_count":365},{"path":"/folder-328","file_count":4208},{"path":"/folder-329","file_count":132},{"path":"/folder-330","file_count":1378},{"path":"/folder-331","file_count":2893},{"path":"/folder-332","file_count":4595},{"path":"/folder-333","file_count":4587},{"path":"/folder-334","file_count":3319},{"path":"/folder-335","file_count":2078},{"path":"/folder-336","file_count":2785},{"path":"/folder-337","file_count":2782},{"path":"/folder-338","file_count":1271},{"path":"/folder-339","file_count":4009},{"path":"/folder-340","file_count":3789},{"path":"/folder-341","file_count":4453},{"path":"/folder-342","file_count":1987},{"path":"/folder-343","file_count":1100},{"path":"/folder-344","file_count":2208},{"path":"/folder-345","file_count":4605},{"path":"/folder-346","file_count":3533},{"path":"/folder-347","file_count":3376},{"path":"/folder-348","file_count":4575},{"path":"/folder-349","file_count":2770},{"path":"/folder-350","file_count":1264}];
+        const table = new Tabulator("#folder-table", {
+            data: tableData, layout: "fitColumns", pagination: "local", paginationSize: 50,
+            paginationSizeSelector: [25, 50, 100, 250, true],
+            columns: [
+                { title: "Folder Path", field: "path", sorter: "string", widthGrow: 3,
+                  formatter: function(cell) { return '<span style="font-family: monospace;">' + cell.getValue() + '</span>'; } },
+                { title: "File Count", field: "file_count", sorter: "number", hozAlign: "right", headerHozAlign: "right", width: 150,
+                  formatter: function(cell) { const v = cell.getValue(); return v < 0 ? '<span style="color: #dc3545;">Error</span>' : v.toLocaleString(); } }
+            ],
+            initialSort: [{ column: "path", dir: "asc" }]
+        });
+        document.getElementById("search-input").addEventListener("input", function(e) {
+            table.setFilter("path", "like", e.target.value.toLowerCase());
+        });
+    </script>
+</body>
+</html>

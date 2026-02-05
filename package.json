@@ -1,0 +1,17 @@
+{
+  "name": "dropbox-folder-counter-tests",
+  "version": "1.0.0",
+  "description": "E2E tests for Dropbox Folder Counter HTML dashboard",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report playwright-report",
+    "serve": "npx serve tests/e2e/fixtures -p 3000"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "serve": "^14.2.0"
+  }
+}
