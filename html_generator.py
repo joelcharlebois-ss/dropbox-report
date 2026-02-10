@@ -166,6 +166,7 @@ def generate_html_report(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dropbox Folder File Count Report</title>
+    <link rel="icon" type="image/x-icon" href="https://api.sortspoke.com/images/favicon.ico">
     <link href="https://unpkg.com/tabulator-tables@5.5.0/dist/css/tabulator.min.css" rel="stylesheet">
     <style>
         * {{
