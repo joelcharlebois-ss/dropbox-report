@@ -15,7 +15,7 @@ A Python tool that scans a Dropbox folder recursively, counts files in each subf
 
 ## Live Report
 
-View the report at: https://joelcharlebois-ss.github.io/dropbox-report/
+View the report at: https://ss-jac.github.io/dropbox-report/
 
 ## Project Structure
 
