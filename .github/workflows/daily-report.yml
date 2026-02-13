@@ -248,7 +248,7 @@ jobs:
                               }},
                               scales: {{
                                   y: {{
-                                      beginAtZero: false,
+                                      beginAtZero: true,
                                       ticks: {{ callback: function(value) {{ return value.toLocaleString(); }} }}
                                   }},
                                   x: {{ grid: {{ display: false }} }}
