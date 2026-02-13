@@ -4,7 +4,7 @@
 
 A Python tool that scans Dropbox folders recursively, counts files per subfolder, and generates an interactive HTML report with 14-day trend tracking. Reports are hosted via GitHub Pages.
 
-**Live report:** https://joelcharlebois-ss.github.io/dropbox-report/
+**Live report:** https://ss-jac.github.io/dropbox-report/
 
 ## Tech Stack
 
