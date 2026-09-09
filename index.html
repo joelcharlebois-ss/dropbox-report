@@ -32,19 +32,19 @@
 <body>
     <div class="container">
         <h1>Dropbox Folder File Count Report</h1>
-        <div class="meta-info"><span><strong>Generated:</strong> 2026-09-08 13:12:56 UTC</span></div>
+        <div class="meta-info"><span><strong>Generated:</strong> 2026-09-09 13:17:31 UTC</span></div>
         
         <div class="chart-container">
             <h2 class="chart-title">14-Day Progress</h2>
             <canvas id="progressChart"></canvas>
         </div>
         <div class="stats">
-            <div class="stat-box"><div class="label">Total Folders</div><div class="value">18</div></div>
-            <div class="stat-box"><div class="label">Total Files</div><div class="value">52,431</div></div>
+            <div class="stat-box"><div class="label">Total Folders</div><div class="value">17</div></div>
+            <div class="stat-box"><div class="label">Total Files</div><div class="value">50,036</div></div>
             
             <div class="stat-box change-box">
                 <div class="label">Change from Yesterday</div>
-                <div class="value" style="color: #666;"><span style="font-size: 18px;">&#x2192;</span> No change</div>
+                <div class="value" style="color: #28a745;"><span style="font-size: 18px;">&#x2193;</span> 2,395 files</div>
             </div>
         </div>
         <div class="search-box"><input type="text" id="search-input" placeholder="Search folders..."></div>
@@ -59,10 +59,10 @@
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ["2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28", "2026-08-29", "2026-08-30", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-05", "2026-09-06", "2026-09-07", "2026-09-08"],
+                    labels: ["2026-08-26", "2026-08-27", "2026-08-28", "2026-08-29", "2026-08-30", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-05", "2026-09-06", "2026-09-07", "2026-09-08", "2026-09-09"],
                     datasets: [{
                         label: 'Total Files',
-                        data: [56339, 54744, 57433, 55373, 55373, 55373, 55373, 53436, 49728, 49728, 52431, 52431, 52431, 52431, 52431],
+                        data: [54744, 57433, 55373, 55373, 55373, 55373, 53436, 49728, 49728, 52431, 52431, 52431, 52431, 52431, 50036],
                         borderColor: '#0061fe',
                         backgroundColor: 'rgba(0, 97, 254, 0.1)',
                         borderWidth: 2,
@@ -97,7 +97,7 @@
             });
         </script>
     <script>
-        const tableData = [{"path": "/", "file_count": 0}, {"path": "/batch 393", "file_count": 2395}, {"path": "/batch 394", "file_count": 2823}, {"path": "/batch 395", "file_count": 3813}, {"path": "/batch 396", "file_count": 4312}, {"path": "/batch 397", "file_count": 4692}, {"path": "/batch 398", "file_count": 4971}, {"path": "/batch 399", "file_count": 3612}, {"path": "/batch 400", "file_count": 3028}, {"path": "/batch 401", "file_count": 4209}, {"path": "/batch 402", "file_count": 2974}, {"path": "/batch 403", "file_count": 3254}, {"path": "/batch 404", "file_count": 1637}, {"path": "/batch 405", "file_count": 817}, {"path": "/batch 406", "file_count": 2169}, {"path": "/batch 407", "file_count": 2333}, {"path": "/batch 408", "file_count": 2689}, {"path": "/batch 409", "file_count": 2703}];
+        const tableData = [{"path": "/", "file_count": 0}, {"path": "/batch 394", "file_count": 2823}, {"path": "/batch 395", "file_count": 3813}, {"path": "/batch 396", "file_count": 4312}, {"path": "/batch 397", "file_count": 4692}, {"path": "/batch 398", "file_count": 4971}, {"path": "/batch 399", "file_count": 3612}, {"path": "/batch 400", "file_count": 3028}, {"path": "/batch 401", "file_count": 4209}, {"path": "/batch 402", "file_count": 2974}, {"path": "/batch 403", "file_count": 3254}, {"path": "/batch 404", "file_count": 1637}, {"path": "/batch 405", "file_count": 817}, {"path": "/batch 406", "file_count": 2169}, {"path": "/batch 407", "file_count": 2333}, {"path": "/batch 408", "file_count": 2689}, {"path": "/batch 409", "file_count": 2703}];
         const table = new Tabulator("#folder-table", {
             data: tableData, layout: "fitColumns", pagination: "local", paginationSize: 50,
             paginationSizeSelector: [25, 50, 100, 250, true],
